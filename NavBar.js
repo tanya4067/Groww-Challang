@@ -1,9 +1,14 @@
 import React,{useContext,useState} from 'react';
+import {Routes, Route, useNavigate} from 'react-router-dom';
 import './style.css';
 import { UserContext } from '../UserContext';
+import App from '../App';
+import TradingViewWidget from './TradingViewWidget';
 const NavBar =()=>
 {
     const [search,setSearch]=useState("");
+    const  navigate =useNavigate();
+    
     const postData = async (e) =>{
         e.preventDefault();
         const url='http://127.0.0.1:8000/searchStocks';
@@ -28,6 +33,7 @@ const NavBar =()=>
             .catch(error =>{
                 alert('BAD');
             });
+            
         
         
         setSearch("");
@@ -35,12 +41,16 @@ const NavBar =()=>
     const handleChange = (e)=>{
         setSearch(e.target.value); 
     }
+    const handleSubmit = () =>
+    {
+        window.location.reload();
+    }
     return(
         <div className="topnav">
             <div className="search-container">
                 <form onSubmit={postData}>
                     <input type="text" placeholder="Search.." onChange={handleChange} name="search" value={search}></input>
-                    <button type="submit">SUBMIT</button>
+                    <button type="submit" onClick={handleSubmit}>SUBMIT</button>
                 </form>
             </div>
             <a href="#about">Stock Screener</a>

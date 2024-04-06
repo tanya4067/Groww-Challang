@@ -1,33 +1,36 @@
 // TradingViewWidget.jsx
-import React, { useEffect, useRef, memo } from 'react';
+import React, { useEffect, useRef, memo,useState } from 'react';
 
 function TradingViewWidget() {
   const container = useRef();
+  const [search,setSearch]=useState("");
+  fetch("http://127.0.0.1:8000/getStocks")
+            .then(resp => {
+                return resp.json();
+            }).then(results => {
+                var a=(results.data.length);
+                setSearch(results.data[a-1].search);
 
+        })
+   console.log(search);
   useEffect(
     () => {
       const script = document.createElement("script");
       script.src = "https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";
       script.type = "text/javascript";
       script.async = true;
-      script.innerHTML = `
+      const a="";
+      if(search=="Microsoft")
+      {
+        a="MSFT|1D";
+        console.log('Hihih');
+      }
+      script.innerHTML = 
         {
           "symbols": [
             [
-              "Apple",
-              "AAPL|1D"
-            ],
-            [
-              "Google",
-              "GOOGL|1D"
-            ],
-            [
-              "Microsoft",
-              "MSFT|1D"
-            ],
-            [
-              "Bitcoin",
-              "FX:EURUSD|1D"
+              {search},
+              {a}
             ]
           ],
           "chartOnly": false,
@@ -62,7 +65,7 @@ function TradingViewWidget() {
             "60m|1W",
             "all|1M"
           ]
-        }`;
+        };
       container.current.appendChild(script);
     },
     []
@@ -71,7 +74,22 @@ function TradingViewWidget() {
   return (
     <div className="tradingview-widget-container" ref={container}>
       <div className="tradingview-widget-container__widget"></div>
-      <div className="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span className="blue-text">Track all markets on TradingView</span></a></div>
+      <div className="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span className="blue-text"></span></a></div>
+      <div>
+        Current Price : 100000 rs
+        <br></br>
+        Stock P/E :
+        <br></br>
+        ROCE :
+        <br></br>
+        Book Values :
+        <br></br>
+        High/Low: 
+        <br></br>
+        Dividend Yield :
+        <br></br>
+        Face Value:
+      </div>
     </div>
   );
 }
